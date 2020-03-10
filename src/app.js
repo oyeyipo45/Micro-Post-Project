@@ -14,6 +14,9 @@ document.querySelector('#posts').addEventListener("click", deletePost);
 document.querySelector("#posts").addEventListener("click", enableEdit);
 // i also used event delegation to check for some logic when running the function
 
+//Listen for cancel
+document.querySelector('.card-form').addEventListener('click', cancelEdit);
+
 
 //get posts
 function getPosts(){
@@ -27,21 +30,48 @@ function getPosts(){
 function submitPost(){
     const title = document.querySelector("#title").value;
     const body = document.querySelector("#body").value;
+    const id = document.querySelector("#id").value;
 
+    //putting the values into the data object
     const data = {
         //since the key and the title are thesame in ES6 you can just write the value like that
         title: title,
         body: body
     }
 
-    //Create post, making a http post request
-    http.post("http://localhost:3000/posts", data)
-    .then(data => {
-        ui.showAlert('Post added', "alert alert-success");
-        ui.clearFields();
-        getPosts();
-    })
-    .catch(err => console.log(err));
+
+    //stopping adding of empty post OR Validation Input
+    if(title === '' || body === ''){
+        ui.showAlert("Please fill in all fields",' alert alert-danger');
+    } else {
+        //check for hidden id
+        if(id === ''){
+            //Create Post
+            //Create post, making a http post request
+            http.post("http://localhost:3000/posts", data)
+            .then(data => {
+                ui.showAlert('Post added', "alert alert-success");
+                ui.clearFields();
+                getPosts();
+            })
+            .catch(err => console.log(err));
+        } else {
+            //Update the Post
+            http.put(`http://localhost:3000/posts/${id}`, data)
+            .then(data => {
+                ui.showAlert('Post updated', "alert alert-success");
+                ui.changeFormState('add');
+                getPosts();
+            })
+            .catch(err => console.log(err));
+
+        }
+        
+    
+        
+    }
+
+    
 }
 
 
@@ -88,6 +118,15 @@ function enableEdit(e){
         //Fill form with current post
         ui.fillForm(data);
     
+    }
+
+    e.preventDefault();
+}
+
+//Cancel Edit State
+function cancelEdit(e){
+    if(e.target.classList.contains("post-cancel")){
+        ui.changeFormState('add');
     }
 
     e.preventDefault();

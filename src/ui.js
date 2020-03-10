@@ -81,6 +81,9 @@ class UI {
     }
 
     //clear Id hidden value
+    clearIdInput(){
+        this.IdInput.value = '';
+    }
 
     //change Form State
     changeFormState(type) {
@@ -106,7 +109,7 @@ class UI {
 
             //Remove cancel button if it is there
             if(document.querySelector(".post-cancel")){
-                document.querySelector(".post-cancel").remove();
+               document.querySelector(".post-cancel").remove();
             }
 
             //Clear ID from hidden field
