@@ -8,6 +8,8 @@ class UI {
         this.forState = '.add';
     }
 
+
+    //SHOW ALL POSTS
     showPosts(posts){
         let output = '';
 
@@ -33,7 +35,7 @@ class UI {
 
     }
 
-    
+    //SHOW POSTS
     showAlert(message, className){
         this.clearAlert();
 
@@ -55,7 +57,7 @@ class UI {
             this.clearAlert();
         }, 3000);
     }
-
+    //CLEAR ALERT MESSAGE
     clearAlert(){
         const currentAlert = document.querySelector(".alert");
         if(currentAlert){
@@ -63,9 +65,57 @@ class UI {
         }
     }
 
+    //CLEAR ALL FIELDS
     clearFields(){
         this.titleInput.value = " ";
         this.bodyInput.value = " ";
+    }
+
+    //FILL FORM TO EDIT
+    fillForm (data){
+        this.titleInput.value = data.title;
+        this.bodyInput.value = data.body;
+        this.idInput.value = data.id;
+
+        this.changeFormState("edit");
+    }
+
+    //clear Id hidden value
+
+    //change Form State
+    changeFormState(type) {
+        if(type === "edit"){
+            this.postSubmit.textContent = "Update Post";
+            this.postSubmit.className = 'post-submit btn btn-warning btn-block';
+        
+            //create cancel button
+            const button = document.createElement("button");
+            button.className = "post-cancel btn btn-light btn-block";
+            button.appendChild(document.createTextNode("Cancel Edit"));
+
+            //get parent
+            const cardForm = document.querySelector('.card-form');
+            //Get element to insert before
+            const formEnd = document.querySelector('.form-end');
+            //insert cancel button
+            cardForm.insertBefore(button, formEnd);
+        
+        } else {
+            this.postSubmit.textContent = "Post It";
+            this.postSubmit.className = 'post-submit btn btn-primary btn-block';
+
+            //Remove cancel button if it is there
+            if(document.querySelector(".post-cancel")){
+                document.querySelector(".post-cancel").remove();
+            }
+
+            //Clear ID from hidden field
+            this.clearIdInput();
+
+            //clear Text fields
+            this.clearFields();
+
+        }
     }
 }
 

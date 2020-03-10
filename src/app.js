@@ -11,7 +11,8 @@ document.querySelector('.post-submit').addEventListener("click", submitPost);
 document.querySelector('#posts').addEventListener("click", deletePost);
 
 //listen for edit state
-document.querySelector("#posts").addEventListener("click", enableEdit)
+document.querySelector("#posts").addEventListener("click", enableEdit);
+// i also used event delegation to check for some logic when running the function
 
 
 //get posts
@@ -78,6 +79,14 @@ function enableEdit(e){
         const title = e.target.parentElement.previousElementSibling.previousElementSibling.textContent;
         const body = e.target.parentElement.previousElementSibling.textContent;
         
+        const data = {
+            id,
+            title,
+            body
+        }
+
+        //Fill form with current post
+        ui.fillForm(data);
     
     }
 
