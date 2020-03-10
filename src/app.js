@@ -10,6 +10,11 @@ document.querySelector('.post-submit').addEventListener("click", submitPost);
 //listen for delete
 document.querySelector('#posts').addEventListener("click", deletePost);
 
+//listen for edit state
+document.querySelector("#posts").addEventListener("click", enableEdit)
+
+
+//get posts
 function getPosts(){
     http.get('http://localhost:3000/posts')
     .then(data => ui.showPosts(data))
@@ -41,7 +46,7 @@ function submitPost(){
 
 //Delete Post
 function deletePost(e){
-    e.preventDefault();
+    
     //checking is the parent element contains a delete class so the delete effect can take place on the click
     if(e.target.parentElement.classList.contains("delete")){
         //creating an Id to differentiate which post you want to delete using their id in the UI
@@ -61,4 +66,20 @@ function deletePost(e){
             .catch(err => console.log(err));
         }
     }
+
+    e.preventDefault();
+}
+
+//enable Edit State
+function enableEdit(e){
+
+    if(e.target.parentElement.classList.contains("edit")){  
+        const id = e.target.parentElement.dataset.id;
+        const title = e.target.parentElement.previousElementSibling.previousElementSibling.textContent;
+        const body = e.target.parentElement.previousElementSibling.textContent;
+        
+    
+    }
+
+    e.preventDefault();
 }
